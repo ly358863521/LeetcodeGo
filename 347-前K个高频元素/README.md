@@ -57,21 +57,119 @@
 - Go实现如下：
 
 - ```go
-  func heapify(nums []int,i int){
-  	n := len(nums)
-  	left,right := i*2+1,i*2+2 //左右节点
+  type Freq struct {
+  	key   int
+  	value int
+  }
+  type FreqList []Freq
+  
+  func topKFrequent(nums []int, k int) []int {
+  	dict := make(map[int]int)
+  	for _, i := range nums {
+  		dict[i]++
+  	}
+  	Frequency := make(FreqList, len(dict))
+  	i := 0
+  	for k, v := range dict {
+  		Frequency[i].key = k
+  		Frequency[i].value = v
+		i++
+  	}
+  	heap := Frequency[:k]
+  	buildheap(heap, k)
+  	for i := k; i < len(Frequency); i++ {
+  		if Frequency[i].value > heap[0].value {
+  			heap = heap[1:]
+  			heap = append(heap, Frequency[i])
+  			buildheap(heap, k)
+  		}
+  	}
+  	res := make([]int, k)
+  	for i := 0; i < k; i++ {
+  		res[i] = heap[i].key
+  	}
+  	return res
+  
+  }
+  
+  func heapify(freq FreqList, n int, i int) {
+  	left, right := i*2+1, i*2+2 //左右节点
   	min := i
-  	if left<n && nums[min] > nums[left]{
+  	if left < n && freq[min].value > freq[left].value {
   		min = left
   	}
-  	if right<n && nums[min] > nums[right]{
+  	if right < n && freq[min].value > freq[right].value {
   		min = right
   	}
-  	if min != i{
-  		nums[min],nums[i] = nums[i],nums[min]
-  		heapify(nums,min)
+  	if min != i {
+  		freq[min], freq[i] = freq[i], freq[min]
+  		heapify(freq, n, min)
   	}
   }
+  func buildheap(freq FreqList, n int) {
+  	for i := n / 2; i >= 0; i-- {
+  		heapify(freq, n, i)
+  	}
+  
+  }
+  ```
+  
+  ```go
+  import "sort"
+  type Freq struct {
+  	key   int
+  	value int
+  }
+  type FreqList []Freq
+  func (p FreqList) Swap(i, j int)      { p[i], p[j] = p[j], p[i] }
+  func (p FreqList) Len() int           { return len(p) }
+  func (p FreqList) Less(i, j int) bool { return p[i].value > p[j].value }
+  func topKFrequent(nums []int, k int) []int {
+      dict :=make(map[int]int)
+      for _,i:= range nums{
+          dict[i]++
+      }
+      p:=make(FreqList,len(dict))
+      i:=0
+      for k, v := range dict {
+          p[i].key = k
+          p[i].value = v
+          i++
+      }
+      sort.Sort(p)
+      res :=make([]int,k)
+      for i:=0;i<k;i++{
+          res[i] = p[i].key
+      }
+      return res
+  }
+  
+  ```
+  
+  
+  
+- 作弊实现如下：
+
+- ```python
+  class Solution:
+      def topKFrequent(self, nums: List[int], k: int) -> List[int]:
+          from collections import Counter
+          return list(zip(*Counter(nums).most_common(k)))[0]
   ```
 
-- 
+- ```python
+  class Solution:
+      def topKFrequent(self, nums: List[int], k: int) -> List[int]:
+          from collections import Counter
+          v = sorted(Counter(nums).items(),key = lambda x:x[1],reverse = True)
+          return [i[0] for i in v][:k]
+  ```
+
+- ```python
+  class Solution:
+      def topKFrequent(self, nums: List[int], k: int) -> List[int]:
+          a = {}
+          for i in nums:
+              a[i] = a.get(i,0)+1
+          return [i[0] for i in sorted(a.items(),key = lambda x:x[1],reverse = True)][:k]
+  ```
