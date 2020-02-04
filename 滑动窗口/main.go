@@ -25,7 +25,7 @@ func checkInclusion(s1 string, s2 string) bool {
 		right++
 		for match == needs {
 			fmt.Println(right, left)
-			if right-left+1 == len(s1) {
+			if right-left == len(s1) {
 				return true
 			}
 			c2 := s2[left] - 'a'
