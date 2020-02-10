@@ -56,5 +56,6 @@ func main() {
 	// fmt.Println(strings.SplitN(s, "/", -1))
 	// fmt.Println(strings.Fields(s))
 	// fmt.Println(strings.FieldsFunc(s, isSlash))
-	fmt.Println(getnext("abcdeabd"))
+	fmt.Println(getnext("abcd#dcba"))
+	fmt.Println(getnext1("abcd#dcba"))
 }

@@ -1,5 +1,24 @@
 package main
 
+func getnext1(p string) []int {
+	next := make([]int, len(p), len(p))
+	i, j := 0, 1
+	for j < len(p) {
+		if p[j] == p[i] {
+			next[j] = i + 1
+			i++
+			j++
+		} else {
+			if i == 0 {
+				next[j] = 0
+				j++
+				continue
+			}
+			i = next[i-1]
+		}
+	}
+	return next
+}
 func getnext(pat string) []int {
 	next := make([]int, len(pat), len(pat))
 	next[0] = -1
