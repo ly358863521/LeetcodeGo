@@ -10,6 +10,11 @@ func hammingWeight(n int) int {
 	}
 	return count
 }
+func stringlen() {
+	a := "中国"
+	fmt.Println(len(a))
+}
 func main() {
-	fmt.Println(hammingWeight(11))
+	// fmt.Println(hammingWeight(11))
+	stringlen()
 }
