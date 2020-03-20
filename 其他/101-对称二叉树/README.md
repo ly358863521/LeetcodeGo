@@ -1,3 +1,4 @@
+```go
 package main
 
 /**
@@ -24,3 +25,5 @@ func isSymmetric(root *TreeNode) bool {
 	}
 	return isMirror(root.Left, root.Right)
 }
+
+```
